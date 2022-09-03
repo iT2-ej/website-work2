@@ -1,97 +1,47 @@
-<body>
+
     <p id="notice"></p>
 
 <h1>Books</h1>
 
 <table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Body</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-      <tr>
-        <td>たのしいRuby</td>
-        <td>Rubyの入門におすすめです</td>
-        <td><a class="show_95372" href="/books/95372">Show</a></td>
-        <td><a class="edit_95372" href="/books/95372/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_95372" rel="nofollow" data-method="delete" href="/books/95372">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>入門Git</td>
-        <td>gitについての基本操作から内部構造まで解説してくれます</td>
-        <td><a class="show_95373" href="/books/95373">Show</a></td>
-        <td><a class="edit_95373" href="/books/95373/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_95373" rel="nofollow" data-method="delete" href="/books/95373">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>アルゴリズム図鑑</td>
-        <td>アルゴリズムについてカラーイラストでしっかり解説してくれます</td>
-        <td><a class="show_95374" href="/books/95374">Show</a></td>
-        <td><a class="edit_95374" href="/books/95374/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_95374" rel="nofollow" data-method="delete" href="/books/95374">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>達人プログラマー</td>
-        <td>プログラマ入門者は必読！</td>
-        <td><a class="show_95375" href="/books/95375">Show</a></td>
-        <td><a class="edit_95375" href="/books/95375/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_95375" rel="nofollow" data-method="delete" href="/books/95375">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>データベース実践入門</td>
-        <td>効率的なSQL文を教えてくれます</td>
-        <td><a class="show_95376" href="/books/95376">Show</a></td>
-        <td><a class="edit_95376" href="/books/95376/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_95376" rel="nofollow" data-method="delete" href="/books/95376">Destroy</a></td>
-      </tr>
-      <tr>
-        <td>リーダブルコード</td>
-        <td>実践的なテクニック</td>
-        <td><a class="show_95370" href="/books/95370">Show</a></td>
-        <td><a class="edit_95370" href="/books/95370/edit">Edit</a></td>
-        <td><a data-confirm="Are you sure?" class="destroy_95370" rel="nofollow" data-method="delete" href="/books/95370">Destroy</a></td>
-      </tr>
-  </tbody>
+ <thead>
+   <tr>
+     <th>Title</th>
+     <th>Body</th>
+     <th colspan="3"></th>
+   </tr>
+ </thead>
+ <tbody>
+   <% @books.each do |book| %>
+   <tr>
+     <td><%= book.title %></td>
+     <td><%= book.body %></td>
+     <td><%= link_to 'show' ,book_path(book.id) %></td>
+     <td><%= link_to 'edit' ,edit_book_path(book.id) %></td>
+     <td><%= link_to 'destroy' ,book_path(book.id) %></td>
+   </tr>
+   <% end %>
+ </tbody>
 </table>
 
 
-<h2>New book</h2>
-<form class="new_book" id="new_book" action="/books" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="8Kr8aTA78hJ7AaIoqXOrAD8ndQVY/i+hsaacU6DJjfy2oxDHNzeZVbwUrKy4WB1dQlqVlhEhPbUu2xhL9BMP1Q==">
 
-  <div class="field">
-    <label for="book_title">Title</label>
-    <input class="book_title" type="text" name="book[title]" id="book_title">
-  </div>
-
-  <div class="field">
-    <label for="book_body">Body</label>
-    <textarea class="book_body" name="book[body]" id="book_body"></textarea>
-  </div>
-
-  <div class="actions">
-    <input type="submit" name="commit" value="Create Book" data-disable-with="Create Book">
-  </div>
-</form>
-
-<h1>新規投稿</h1>
+<h1>New Book</h1>
+<% if @book.errors.any? %>
+ <%= @book.errors.count %>件のエラーが発生しました
+ <ul>
+   <% @book.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+   <% end %>
+ </ul>
+ <% end %>
 <!-- form_withにオプション追記 -->
-<%= form_with model: @list, url: '/books', method: :post do |f| %>
+<%= form_with model: @book, url: '/books', method: :post do |f| %>
 
-  <h4>タイトル</h4>
-  <span>
-    <%= link_to books.title, "/lists/#{list.id}" %>
-  </span>
-  
-  <h4>本文</h4>
+  <h4>Title</h4>
+  <%= f.text_field :title %>
+  <h4>Body</h4>
   <%= f.text_area :body %>
-  
-  <%= f.submit '投稿' %>
-  
+
+  <%= f.submit 'Create Book' %>
 <% end %>
-
-
-</body>
