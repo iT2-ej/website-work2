@@ -1,7 +1,7 @@
 <h1>Editing Book</h1>
 <%= form_with model: @book, url: book_path do |f| %>
  <% if @book.errors.any? %>
-  <%= @book.errors.count %>件のエラーが発生しました
+  <%= @book.errors.count %>件のerrorが発生しました
   <ul>
     <% @book.errors.full_messages.each do |message| %>
       <li><%= message %></li>
@@ -16,5 +16,10 @@
   <%= f.text_area :body %>
 
   <%= f.submit 'Update Book' %>
+  
+  <div>
+    <%=link_to "Show", book_path(@book.id) %>
+    <%= link_to "Back", books_path %>
+  </div>
 
 <% end %>
